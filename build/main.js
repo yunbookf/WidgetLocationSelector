@@ -1,9 +1,9 @@
 $(document).ready(function (e) {
-    var wmls = new WidgetMobileLocationSelector({
+    var wls = new WidgetLocationSelector({
         key: "4db6fd173aaa29c6a3cca2c5efbbda21"
     });
-    $("#abc").on("click", function (e) {
-        wmls.show();
+    ModuleTouch.tap("#abc", function (e) {
+        wls.show();
         e.preventDefault();
         return false;
     });
