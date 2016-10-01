@@ -119,7 +119,7 @@ class WidgetLocationSelector {
                     let node: JQuery = $(e.currentTarget);
                     let location: string[] = node.attr("location").split(",");
                     this.onSelect(node.children(".title-wls").text(), node.children(".text-wls").text(), location[1], location[0]);
-                    window.location.hash = "";
+                    window.history.go(window.location.hash === "#map-wls" ? -1 : -2);
                     e.preventDefault();
                     return false;
                 }).bind(this));
