@@ -75,6 +75,8 @@ class WidgetLocationSelector {
                     for (let item of j.tips) {
                         this.dom.find(".list-wls").append(`<div class="item-wls" location="${item.location}"><div class="title-wls">${item.name}</div><div class="text-wls">${item.address}</div></div>`);
                     }
+                    // --- 绑定点击选择事件 ---
+                    this._bindTap();
                 }).bind(this)});
             }).bind(this), 300);
         }).bind(this));
@@ -115,14 +117,7 @@ class WidgetLocationSelector {
                     this.dom.find(".list-wls").append(`<div class="item-wls" location="${item.location}"><div class="title-wls">${item.name}</div><div class="text-wls">${item.address}</div></div>`);
                 }
                 // --- 绑定点击选择事件 ---
-                ModuleTouch.tap(this.dom.find(".list-wls > .item-wls"), (function(e: JQueryEventObject): boolean {
-                    let node: JQuery = $(e.currentTarget);
-                    let location: string[] = node.attr("location").split(",");
-                    this.onSelect(node.children(".title-wls").text(), node.children(".text-wls").text(), location[1], location[0]);
-                    window.history.go(window.location.hash === "#map-wls" ? -1 : -2);
-                    e.preventDefault();
-                    return false;
-                }).bind(this));
+                this._bindTap();
             }).bind(this)});
         }).bind(this), 300);
         // --- 延迟三百毫秒是怕有人频繁拖动搜索 ---
@@ -130,6 +125,19 @@ class WidgetLocationSelector {
 
     // --- 事件 ---
     public onSelect: (name: string, address: string, lat: string, lng: string) => void = function(): void {};
+
+    // --- 内部方法 ---
+    // --- 绑定点击事件 ---
+    private _bindTap(): void {
+        ModuleTouch.tap(this.dom.find(".list-wls > .item-wls"), (function(e: JQueryEventObject): boolean {
+            let node: JQuery = $(e.currentTarget);
+            let location: string[] = node.attr("location").split(",");
+            this.onSelect(node.children(".title-wls").text(), node.children(".text-wls").text(), location[1], location[0]);
+            window.history.go(window.location.hash === "#map-wls" ? -1 : -2);
+            e.preventDefault();
+            return false;
+        }).bind(this));
+    }
 
 }
 
